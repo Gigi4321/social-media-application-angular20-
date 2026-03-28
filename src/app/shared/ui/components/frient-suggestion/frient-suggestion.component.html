@@ -1,0 +1,22 @@
+
+<div class="friends-card p-3 rounded-lg border border-slate-200 ">
+    <div class="top flex justify-between">
+        <div class="left flex gap-2">
+            <img [src]="frient.photo" class="w-10 h-10 rounded-full">
+            <div class="user-info">
+                <h3 class="hyphens-auto text-[14px] text-gray-900 font-extrabold capitalize ">{{frient.name}}</h3>
+                <p class="hyphens-auto text-[13.5px] text-slate-400 font-light "><span [class.hidden]="!frient.username">@</span>{{frient.username}}</p>
+            </div>
+        </div>
+        <div class="right">
+            <button
+            (click)="followFriend() "
+                class="py-1.5 px-2 bg-blue-50 border border-blue-100 cursor-pointer hover:bg-blue-200 text-blue-500 rounded-full text-2xs font-extrabold"><i
+                    class="fa-solid fa-user-plus"></i> Follow</button>
+        </div>
+    </div>
+    <div class="bottom-btn mt-3">
+        <button class="py-1 px-3 bg-slate-100 text-gray-500 rounded-full text-2xs font-bold "><span>{{frient.followersCount}}</span>
+            Followers</button>
+    </div>
+</div>

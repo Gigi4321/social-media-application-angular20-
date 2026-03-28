@@ -1,0 +1,59 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* choose one of the following */
+
+@import "tailwindcss";
+@import "flowbite/src/themes/default";
+
+@plugin "flowbite/plugin";
+
+@source "../node_modules/flowbite";
+
+
+@utility container{
+    margin-inline:auto;
+}
+@theme{
+    --color-mainColor:#00298D;
+    --color-secondColor:#f0f2f5;
+
+}
+@layer components{
+    .auth-active-btn{
+        @apply rounded-lg py-2 text-sm font-extrabold capitalize transition bg-white text-mainColor shadow-sm cursor-pointer
+    }
+    .auth-inactive-btn{
+        @apply  py-2 text-sm font-extrabold capitalize transition bg-transparent text-gray-500 cursor-pointer
+    }
+    .auth-inactive-btn:hover{
+        @apply  text-gray-800
+    }
+    .main-btn{
+        @apply w-full rounded-xl py-3 text-base font-extrabold text-white transition disabled:opacity-60 bg-mainColor hover:bg-[#001f6b] cursor-pointer
+    }
+    .NotReadNotificationBtn{
+        @apply inline-flex items-center gap-1.5 rounded-md bg-white px-2.5 py-1 text-xs font-bold text-[#1877f2] ring-1 ring-[#dbeafe] transition hover:bg-[#e7f3ff]
+    }
+    .readNotificationBtn{
+        @apply inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-600
+    }
+}
+
+body{
+    background-color: var(--color-secondColor);
+    font-family: "SN Pro", sans-serif!important;
+}
+#logo-img{
+    border-radius: 6px!important;
+}
+.active{
+    background-color: white!important;
+    color:var(--color-mainColor)!important
+}
+.active-tab{
+    background-color: #edf6ff;
+    color:rgb(43 127 255)!important
+}
+.active-notifi{
+    @apply  bg-[#1877f2] text-white hover:bg-[#4b99ff]
+}

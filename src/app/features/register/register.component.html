@@ -1,0 +1,177 @@
+<div class="hoder-component">
+    <div class="holder-header bg-gray-100 p-1 rounded-lg">
+        <button class="auth-inactive-btn w-[50%]" routerLink="/login">login</button>
+        <button class="auth-active-btn w-[50%]">sign up</button>
+    </div>
+
+    <div class="title mt-4">
+        <p class="text-2xl font-extrabold text-gray-800">Create New Account</p>
+        <p class="text-sm font-body text-gray-400 mt-1">
+            It is quick and easy.
+        </p>
+    </div>
+
+    <form class="grid grid-cols-1 gap-3 mt-4" [formGroup]="registerForm" (ngSubmit)="submitForm()">
+
+        <!-- NAME -->
+        <div class="relative">
+            <div class="absolute inset-y-0 inset-s-0 flex items-center ps-3 pointer-events-none text-gray-500">
+                <i class="fa-regular fa-user"></i>
+            </div>
+
+            <input type="text"
+                [class]="{
+                'border-green-600':registerForm.get('name')?.valid ,
+                'border-red-600':registerForm.get('name')?.invalid && registerForm.get('name')?.touched
+                }"
+                class="block w-full ps-9 pe-3 py-3 bg-neutral-secondary-medium border border-default-medium focus:border-mainColor focus:ring-0 focus:ring-transparent text-heading text-[14px] rounded-base shadow-xs placeholder:text-gray-500"
+                placeholder="Full Name"
+                formControlName="name">
+        </div>
+
+        @if(registerForm.get('name')?.invalid && registerForm.get('name')?.touched){
+        <div class="flex p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft border border-danger-subtle">
+            Please enter your full name (at least 3 characters).
+        </div>
+        }
+
+
+        <!-- USERNAME -->
+        <div class="relative">
+            <div class="absolute inset-y-0 inset-s-0 flex items-center ps-3 pointer-events-none text-gray-500">
+                <i class="fa-solid fa-at"></i>
+            </div>
+
+            <input type="text"
+                class="block w-full ps-9 pe-3 py-3 bg-neutral-secondary-medium border border-default-medium focus:border-mainColor focus:ring-0 focus:ring-transparent text-heading text-[14px] rounded-base shadow-xs placeholder:text-gray-500"
+                placeholder="User Name (optional)"
+                formControlName="username">
+        </div>
+
+
+        <!-- EMAIL -->
+        <div class="relative">
+            <div class="absolute inset-y-0 inset-s-0 flex items-center ps-3 pointer-events-none text-gray-500">
+                <i class="fa-regular fa-envelope"></i>
+            </div>
+
+            <input type="email"
+                class="block w-full ps-9 pe-3 py-3 bg-neutral-secondary-medium border border-default-medium focus:border-mainColor focus:ring-0 focus:ring-transparent text-heading text-[14px] rounded-base shadow-xs placeholder:text-gray-500"
+                [class]="{
+                'border-green-500':registerForm.get('email')?.valid,
+                'border-red-500':registerForm.get('email')?.invalid && registerForm.get('email')?.touched
+                }"
+                placeholder="Email Address"
+                formControlName="email">
+        </div>
+
+        @if(registerForm.get('email')?.invalid && registerForm.get('email')?.touched){
+        <div class="flex p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft border border-danger-subtle">
+            Please enter a valid email address.
+        </div>
+        }
+
+
+        <!-- GENDER -->
+        <div class="relative">
+            <div class="absolute inset-y-0 inset-s-0 flex items-center ps-3 pointer-events-none text-gray-500">
+                <i class="fa-regular fa-address-card"></i>
+            </div>
+
+            <select
+                class="block w-full ps-9 pe-3 py-3 bg-neutral-secondary-medium border border-default-medium focus:border-mainColor focus:ring-0 focus:ring-transparent text-heading text-[14px] rounded-base shadow-xs placeholder:text-gray-500"
+                formControlName="gender"
+                [class]="{
+                'border-green-500':registerForm.get('gender')?.valid,
+                'border-red-500':registerForm.get('gender')?.invalid && registerForm.get('gender')?.touched
+                }">
+
+                <option value="" selected disabled>Select Gender</option>
+                <option value="female">Female</option>
+                <option value="male">Male</option>
+
+            </select>
+        </div>
+
+        @if(registerForm.get('gender')?.invalid && registerForm.get('gender')?.touched){
+        <div class="flex p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft border border-danger-subtle">
+            Please select your gender.
+        </div>
+        }
+
+
+        <!-- DATE -->
+        <div class="relative">
+            <div class="absolute inset-y-0 inset-s-0 flex items-center ps-3 pointer-events-none text-gray-500">
+                <i class="fa-regular fa-calendar"></i>
+            </div>
+
+            <input type="date"
+                class="block w-full ps-9 pe-3 py-3 bg-neutral-secondary-medium border border-default-medium focus:border-mainColor focus:ring-0 focus:ring-transparent text-heading text-[14px] rounded-base shadow-xs placeholder:text-gray-500"
+                [class]="{
+                'border-green-500':registerForm.get('dateOfBirth')?.valid,
+                'border-red-500':registerForm.get('dateOfBirth')?.invalid && registerForm.get('dateOfBirth')?.touched
+                }"
+                formControlName="dateOfBirth">
+        </div>
+
+        @if(registerForm.get('dateOfBirth')?.invalid && registerForm.get('dateOfBirth')?.touched){
+        <div class="flex p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft border border-danger-subtle">
+            Please enter your birth date.
+        </div>
+        }
+
+
+        <!-- PASSWORD -->
+        <div class="relative">
+            <div class="absolute inset-y-0 inset-s-0 flex items-center ps-3 pointer-events-none text-gray-500">
+                <i class="fa-solid fa-key"></i>
+            </div>
+
+            <input type="password"
+                class="block w-full ps-9 pe-3 py-3 bg-neutral-secondary-medium border border-default-medium focus:border-mainColor focus:ring-0 focus:ring-transparent text-heading text-[14px] rounded-base shadow-xs placeholder:text-gray-500"
+                [class]="{
+                'border-green-500':registerForm.get('password')?.valid,
+                'border-red-500':registerForm.get('password')?.invalid && registerForm.get('password')?.touched
+                }"
+                placeholder="Password"
+                formControlName="password">
+        </div>
+
+        @if(registerForm.get('password')?.invalid && registerForm.get('password')?.touched){
+        <div class="flex p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft border border-danger-subtle">
+            Password must be at least 8 characters.
+        </div>
+        }
+
+
+        <!-- CONFIRM PASSWORD -->
+        <div class="relative">
+            <div class="absolute inset-y-0 inset-s-0 flex items-center ps-3 pointer-events-none text-gray-500">
+                <i class="fa-solid fa-key"></i>
+            </div>
+
+            <input type="password"
+                class="block w-full ps-9 pe-3 py-3 bg-neutral-secondary-medium border border-default-medium focus:border-mainColor focus:ring-0 focus:ring-transparent text-heading text-[14px] rounded-base shadow-xs placeholder:text-gray-500"
+                placeholder="Confirm password"
+                formControlName="rePassword">
+        </div>
+
+        @if(registerForm.get('rePassword')?.invalid && registerForm.get('rePassword')?.touched){
+        <div class="flex p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft border border-danger-subtle">
+            Passwords do not match.
+        </div>
+        }
+
+
+        <button   type="submit" class="main-btn">
+            Create Account
+            @if(loading()){
+            <i class="fas fa-spinner fa-spin"></i>
+            }
+        </button>
+
+        <p class="text-center text-red-600 my-3">{{msgError()}}</p>
+
+    </form>
+</div>

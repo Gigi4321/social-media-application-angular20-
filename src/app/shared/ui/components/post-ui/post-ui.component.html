@@ -1,0 +1,408 @@
+@if(!post.isShare){
+<div>
+    <div class="post-card p-3.5 overflow-visible rounded-xl border border-slate-200 bg-white shadow-sm mb-5">
+        <div class="top flex justify-between items-center">
+            <div class="left flex gap-2 items-center">
+                <div class="img-hold"><img [src]="post.user.photo || 'assets/default-avatar.png'"
+                        class="w-10 h-10 rounded-full">
+                </div>
+                <div class="userInfo">
+                    <h3 class="text-heading capitalize ">{{post.user.name}}</h3>
+                    <div class="postInfo text-xs text-gray-500 flex gap-2 items-center">
+                        <span class="text-[.875rem]">@{{post.user.username}}</span>
+                        <span class="text-[.875rem]">.</span>
+                        <span class="text-[.875rem]">{{post.createdAt|timeAgo}}</span>
+                        <span class="text-[.875rem]">.</span>
+
+                        <button [attr.data-dropdown-toggle]="'dropdown_audience_' + post._id"
+                            class="inline-flex items-center justify-center bg-slate-100 rounded-full py-1 px-3 cursor-pointer"
+                            [disabled]="post.user._id !== userId" type="button">
+                            {{post.privacy|privacy}}
+                            <svg class="w-4 h-4 ms-1.5 -me-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m19 9-7 7-7-7" />
+                            </svg>
+                        </button>
+
+
+                        <div [id]="'dropdown_audience_' + post._id"
+                            class="z-10 hidden bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-44">
+                            <ul class="p-2 text-sm text-body font-medium" aria-labelledby="dropdownDefaultButton">
+                                <li>
+                                    <a (click)="updatePrivacy('public')"
+                                        class=" cursor-pointer inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"><i
+                                            class="fa-solid fa-earth-europe me-1.5"></i> Public</a>
+                                </li>
+                                <li>
+                                    <a (click)="updatePrivacy('only_me')"
+                                        class=" cursor-pointer inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"><i
+                                            class="fa-solid fa-lock me-1.5"></i> Only Me</a>
+                                </li>
+                                <li>
+                                    <a (click)="updatePrivacy('following')"
+                                        class=" cursor-pointer inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"><i
+                                            class="fa-solid fa-users me-1.5"></i> Followers</a>
+                                </li>
+
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="right drop-down-menue">
+                <button [attr.data-dropdown-toggle]="'dropdown_edit_' +post._id"
+                    class=" text-body cursor-pointer hover:text-heading bg-neutral-primary-soft box-border border border-transparent hover:bg-neutral-tertiary focus:ring-4 focus:ring-neutral-tertiary rounded-base p-1.5 focus:outline-none"
+                    type="button">
+                    <span class="sr-only">Open dropdown</span>
+                    <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-width="3"
+                            d="M6 12h.01m6 0h.01m5.99 0h.01" />
+                    </svg>
+                </button>
+                <!-- Dropdown menu -->
+                <div [id]="'dropdown_edit_' + post._id"
+                    class="z-10 bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-36 hidden">
+                    <ul class="p-2 text-sm text-body font-medium" aria-labelledby="dropdownButton">
+                        @if(post.user._id === userId){
+                        <li>
+                            <button (click)="fun()"
+                                class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded-md">Edit</button>
+                        </li>
+                        }
+                        <li>
+                            <button
+                            (click)="savePost.emit()"
+                                class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded-md">Save
+                                Post</button>
+                        </li>
+                        @if(post.user._id === userId){
+                        <li>
+                            <button (click)="deletePost()"
+                                class="inline-flex items-center w-full p-2 text-fg-danger hover:bg-neutral-tertiary-medium rounded-md">Delete</button>
+                        </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="post-content">
+            @if(editState){
+            <div class="edit-section my-3 px-3.5"><textarea [formControl]="editSharedBody" maxlength="5000"
+                    class="min-h-27.5 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none ring-[#1877f2]/20 focus:border-[#1877f2] focus:ring-2"></textarea>
+                <div class="mt-2 flex items-center justify-end gap-2"><button
+                        class="rounded-full border border-slate-300 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-100"
+                        (click)="cancel()">Cancel</button><button
+                        class="rounded-full bg-[#1877f2] px-3 py-1.5 text-xs font-bold text-white hover:bg-[#166fe5] disabled:opacity-60"
+                        (click)="update()">Save</button>
+                </div>
+            </div>
+            }
+            @else {
+
+            <div class="post-body px-2 my-2.5">
+                <p class="text-sm text-gray-700">{{post.body}}</p>
+            </div>
+            }
+            <div class="mb-3 -mt-2 inline-flex items-center gap-1 rounded-full bg-[#e7f3ff] px-2.5 py-1 text-[11px] font-bold text-[#1877f2]"
+                [style.display]="post.bookmarked ? 'inline-flex' : 'none'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-bookmark" aria-hidden="true">
+                    <path
+                        d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z">
+                    </path>
+                </svg>Saved
+            </div>
+            <div class="post-img">
+                <img [src]="post.image" alt="" class="rounded-[12px]">
+            </div>
+            <div class="post-likes flex justify-between py-1 border-b border-gray-300">
+                <div class="left flex gap-2  items-center ">
+                    <span class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white "><i
+                            class="fa-regular fa-thumbs-up"></i></span>
+                    <span class="text-slate-600">{{post.likesCount}} likes</span>
+                </div>
+                <div class="right flex md:gap-3 ">
+                    <div class="shares-and-coments flex items-center gap-3">
+                        <span class="text-slate-600"><span class="text-xs me-1"><i class="fa-solid fa-retweet"></i>
+                            </span>{{post.sharesCount}}
+                            shares</span>
+                        <span class="text-slate-600"> {{post.commentsCount}} comments</span>
+                    </div>
+                    <button
+                        class="font-bold text-blue-500 hover:bg-blue-100 px-2 py-1 rounded-sm transition cursor-pointer"
+                        [routerLink]="['/details', post._id ]">view
+                        details</button>
+                </div>
+            </div>
+        </div>
+        <div class="post-bottom grid grid-cols-3 gap-2 pt-2 text-blue-500 " [class.mb-3]="this.flag">
+            <button (click)="likePost()" [class]="{
+                    'bg-blue-100':post.likes.includes(userId)
+                }" class="like text-center hover:bg-blue-100 py-2 transition rounded-sm cursor-pointer">
+
+                <i class="fa-regular fa-thumbs-up"></i> like
+            </button>
+            <button #commetBtn (click)="showComment()"
+                class="like text-center py-2 transition rounded-sm hover:bg-blue-100 cursor-pointer">
+                <i class="fa-regular fa-comment"></i> comment
+            </button>
+            <button (click)="sharePost(post._id)"
+                class="like text-center py-2 transition rounded-sm hover:bg-blue-100 cursor-pointer">
+                <i class="fa-solid fa-share-nodes"></i>({{post.sharesCount}})share
+            </button>
+
+        </div>
+        <!-- add comment -->
+        @defer (on interaction(commetBtn) ) {
+        @if(flag){
+        <app-comment-view [postId]="post._id" [commentCount]="post.commentsCount"></app-comment-view>
+        }
+        }
+    </div>
+</div>
+}
+@else {
+<article class="overflow-visible rounded-xl border border-slate-200 bg-white shadow-sm mb-5">
+
+    <!-- User who shared -->
+    <div class="top flex justify-between items-center px-3 pt-3">
+        <div class="left flex gap-2 items-center">
+            <div class="img-hold"><img [src]="post.user.photo || 'assets/default-avatar.png'"
+                    class="w-10 h-10 rounded-full">
+            </div>
+            <div class="userInfo">
+                <h3 class="text-heading capitalize ">{{post.user.name}}</h3>
+                <div class="postInfo text-xs text-gray-500 flex gap-2 items-center">
+                    <span class="text-[.875rem]">@{{post.user.username}}</span>
+                    <span class="text-[.875rem]">.</span>
+                    <span class="text-[.875rem]">{{post.createdAt|timeAgo}}</span>
+                    <span class="text-[.875rem]">.</span>
+
+                    <button [attr.data-dropdown-toggle]="'dropdown_audience_' + post._id"
+                        class="inline-flex items-center justify-center bg-slate-100 rounded-full py-1 px-3 cursor-pointer"
+                        [disabled]="post.user._id !== userId" type="button">
+                        {{post.privacy|privacy}}
+                        <svg class="w-4 h-4 ms-1.5 -me-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m19 9-7 7-7-7" />
+                        </svg>
+                    </button>
+
+
+                    <div [id]="'dropdown_audience_' + post._id"
+                        class="z-10 hidden bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-44">
+                        <ul class="p-2 text-sm text-body font-medium" aria-labelledby="dropdownDefaultButton">
+                            <li>
+                                <a (click)="updatePrivacy('public')"
+                                    class=" cursor-pointer inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"><i
+                                        class="fa-solid fa-earth-europe me-1.5"></i> Public</a>
+                            </li>
+                            <li>
+                                <a (click)="updatePrivacy('only_me')"
+                                    class=" cursor-pointer inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"><i
+                                        class="fa-solid fa-lock me-1.5"></i> Only Me</a>
+                            </li>
+                            <li>
+                                <a (click)="updatePrivacy('following')"
+                                    class=" cursor-pointer inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"><i
+                                        class="fa-solid fa-users me-1.5"></i> Followers</a>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="right drop-down-menue">
+            <button [attr.data-dropdown-toggle]="'dropdown_edit_' +post._id"
+                class=" text-body cursor-pointer hover:text-heading bg-neutral-primary-soft box-border border border-transparent hover:bg-neutral-tertiary focus:ring-4 focus:ring-neutral-tertiary rounded-base p-1.5 focus:outline-none"
+                type="button">
+                <span class="sr-only">Open dropdown</span>
+                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                    fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-width="3"
+                        d="M6 12h.01m6 0h.01m5.99 0h.01" />
+                </svg>
+            </button>
+            <!-- Dropdown menu -->
+            <div [id]="'dropdown_edit_' + post._id"
+                class="z-10 bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-36 hidden">
+                <ul class="p-2 text-sm text-body font-medium" aria-labelledby="dropdownButton">
+                    @if(post.user._id === userId){
+                    <li>
+                        <button (click)="fun()"
+                            class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded-md">Edit</button>
+                    </li>
+                    }
+                    <li>
+                        <button
+                        (click)="savePost.emit()"
+                            class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded-md">Save
+                            Post</button>
+                    </li>
+                    @if(post.user._id === userId){
+                    <li>
+                        <button (click)="deletePost()"
+                            class="inline-flex items-center w-full p-2 text-fg-danger hover:bg-neutral-tertiary-medium rounded-md">Delete</button>
+                    </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    @if(editState){
+    <div class="edit-section mt-3 px-3.5"><textarea [formControl]="editSharedBody" maxlength="5000"
+            class="min-h-27.5 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none ring-[#1877f2]/20 focus:border-[#1877f2] focus:ring-2"></textarea>
+        <div class="mt-2 flex items-center justify-end gap-2"><button
+                class="rounded-full border border-slate-300 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-100"
+                (click)="cancel()">Cancel</button><button
+                class="rounded-full bg-[#1877f2] px-3 py-1.5 text-xs font-bold text-white hover:bg-[#166fe5] disabled:opacity-60"
+                (click)="update()">Save</button>
+        </div>
+    </div>
+    }
+    @else {
+
+    <div class="post-body px-3.5 my-2">
+        <p class="text-sm text-gray-700">{{post.body}}</p>
+    </div>
+    }
+    <div class="mx-3.5  inline-flex items-center gap-1 rounded-full bg-[#e7f3ff] px-2.5 py-1 text-[11px] font-bold text-[#1877f2]"
+        [style.display]="post.bookmarked ? 'inline-flex' : 'none'">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="lucide lucide-bookmark" aria-hidden="true">
+            <path
+                d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z">
+            </path>
+        </svg>Saved
+    </div>
+
+    <!-- Original Post -->
+    @if(post.sharedPost){
+
+    <div class="mx-4 my-3 rounded-xl border border-slate-200 bg-slate-50 overflow-hidden">
+
+        <div class="p-3">
+
+            <div class="flex items-center gap-2 mb-2">
+
+                <img class="h-9 w-9 rounded-full object-cover"
+                    [src]="post.sharedPost.user.photo || 'assets/default-avatar.png'">
+
+                <div class="min-w-0">
+                    <p class="text-sm font-bold truncate">
+                        {{post.sharedPost.user.name}}
+                    </p>
+                    <p class="text-xs text-slate-500 truncate">
+                        @{{post.sharedPost.user.username}}
+                    </p>
+                </div>
+
+                <button [routerLink]="['/details', post.sharedPost._id]"
+                    class="ml-auto flex items-center gap-1 text-xs font-bold text-blue-600 hover:bg-blue-50 px-2 py-1 rounded">
+                    Original Post
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </button>
+
+            </div>
+
+            <p class="text-sm text-slate-800 mb-2">
+                {{post.sharedPost.body}}
+            </p>
+
+
+        </div>
+
+        @if(post.sharedPost.image){
+        <img class="w-full object-cover max-h-140" [src]="post.sharedPost.image">
+        }
+
+    </div>
+
+    }
+    <!-- Likes / Shares -->
+    <div class="post-likes flex justify-between py-1 border-b border-gray-300 px-3 ">
+
+        <div class="left flex gap-2 items-center ">
+            <span class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white ">
+                <i class="fa-regular fa-thumbs-up"></i>
+            </span>
+            <span class="text-slate-600">{{post.likesCount}} likes</span>
+        </div>
+
+        <div class="right flex md:gap-3 ">
+            <div class="shares-and-coments flex items-center gap-3">
+
+                <span class="text-slate-600">
+                    <span class="text-xs me-1">
+                        <i class="fa-solid fa-retweet"></i>
+                    </span>
+                    {{post.sharesCount}} shares
+                </span>
+
+                <span class="text-slate-600">
+                    {{post.commentsCount}} comments
+                </span>
+
+            </div>
+
+            <button class="font-bold text-blue-500 hover:bg-blue-100 px-2 py-1 rounded-sm transition cursor-pointer"
+                [routerLink]="['/details', post._id ]">
+                view details
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- Actions -->
+    <div class="post-bottom grid grid-cols-3 gap-2 py-2 text-blue-500 px-3 ">
+
+        <button (click)="likePost()" [class]="{'bg-blue-100':post.likes.includes(userId)}"
+            class="text-center hover:bg-blue-100 py-2 transition rounded-sm cursor-pointer">
+
+            <i class="fa-regular fa-thumbs-up"></i> like
+
+        </button>
+
+        <button #commetBtn (click)="showComment()"
+            class="text-center py-2 transition rounded-sm hover:bg-blue-100 cursor-pointer">
+
+            <i class="fa-regular fa-comment"></i> comment
+
+        </button>
+
+        <button (click)="sharePost(post._id)"
+            class="text-center py-2 transition rounded-sm hover:bg-blue-100 cursor-pointer">
+
+            <i class="fa-solid fa-share-nodes"></i>
+            ({{post.sharesCount}}) share
+
+        </button>
+
+    </div>
+
+    @defer (on interaction(commetBtn)) {
+
+    @if(flag){
+
+    <app-comment-view [postId]="post._id" [commentCount]="post.commentsCount">
+    </app-comment-view>
+
+    }
+
+    }
+
+</article>
+}

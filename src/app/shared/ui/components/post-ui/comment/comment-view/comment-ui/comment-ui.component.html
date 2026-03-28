@@ -1,0 +1,83 @@
+<div class="flex gap-2">
+
+    <div class="user-img">
+        <img [src]="comment?.commentCreator?.photo" class="h-9 min-w-9 max-w-full rounded-full object-cover">
+    </div>
+    <div class="relative inline-block max-w-full rounded-2xl bg-secondary px-3 ">
+        <div class="comment-holder flex flex-col justify-center items-center">
+
+            <div class="bg-[#f1f2f6] p-3 rounded-lg">
+                <!-- Header -->
+                <div class="flex items-start justify-between gap-2">
+
+                    <!-- User Info -->
+                    <div>
+                        <p class="text-xs font-bold text-slate-900">
+                            {{comment?.commentCreator?.name}}
+                        </p>
+
+                        <p class="text-xs text-slate-500 flex items-center gap-1">
+                            <span>{{comment?.commentCreator?.username}}</span>
+                            <span>·</span>
+                            <span>{{comment!.createdAt | timeAgo}}</span>
+                        </p>
+                    </div>
+
+                    <!-- Options Icon -->
+                    <div class="relative">
+                        @if( comment?.commentCreator?._id === userId){
+                        <button (click)="showDropMenu()" class="text-slate-400 hover:text-slate-600 text-xs ">
+                            <i class="fa-solid fa-ellipsis"></i>
+                        </button>
+                        }
+                        @if(showDrop){
+                        <div
+                            class="text-[12px] drop-menue p-2 rounded-[.875rem] bg-white w-fit absolute  right-0 shadow-lg left-full top-full">
+                            <button
+
+
+                                (click)="editButtonClicked.emit()"
+                                class="py-1.5 rounded-md transition text-blue-600 px-10 flex gap-2 items-center hover:bg-blue-50 w-full">
+
+                                <i class="fa-regular fa-edit"></i>
+                                Edit
+                            </button>
+                            <button (click)="deleteButtonClicked.emit()"
+                                class="py-1.5 rounded-md transition text-red-600 px-10 flex gap-2 items-center hover:bg-red-50 w-full"><i
+                                    class="fa-solid fa-trash"></i> Delete</button>
+                        </div>
+                        }
+
+                    </div>
+                </div>
+                <!-- Comment Text -->
+                <p class="mt-1 whitespace-pre-wrap text-sm text-slate-800">
+                    {{comment?.content}}
+                </p>
+
+                <!-- Image -->
+                <div class="mt-2 overflow-hidden rounded-lg">
+                    <img [src]="comment?.image" alt="Comment" class="w-50 object-cover overflow-hidden rounded-lg"
+                        [class.hidden]="!comment?.image" />
+                </div>
+
+
+            </div>
+            <!-- Actions -->
+            <div class="mt-2 flex items-center gap-4 text-xs text-slate-500">
+
+                <button (click)="likeButtonClicked.emit()" class="flex items-center gap-1 hover:text-red-500"
+                    [class]="{'text-blue-600':comment?.likes?.includes(userId)}">
+                    <i class="fa-regular fa-heart"></i>
+                    <span>({{comment?.likes?.length}})Like</span>
+                </button>
+
+                <button class="flex items-center gap-1 hover:text-blue-500">
+                    <i class="fa-regular fa-comment"></i>
+                    <span>({{comment?.repliesCount}})Reply</span>
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>

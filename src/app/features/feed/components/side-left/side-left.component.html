@@ -1,0 +1,49 @@
+<aside class="sticky top-20">
+        <div
+            class=" px-3 py-4 shadow-sm rounded-xl bg-neutral-primary-soft  border-default ">
+
+            <ul class="space-y-2 font-medium">
+                <li>
+                    <button
+                        class="flex  items-center w-full text-start px-2 py-1.5 text-body rounded-base hover:bg-secondColor font-bold hover:text-fg-brand group cursor-pointer "
+                        [class]="{
+                            'active-tab':currentTab()==='feed'
+                        }" (click)="changeTab('feed')">
+                        <i class="fa-regular fa-file-lines"></i>
+                        <span class="ms-3">Feed</span>
+                    </button>
+                </li>
+
+                <li>
+                    <button
+                        class="flex  items-center w-full text-start px-2 py-1.5 text-body rounded-base hover:bg-secondColor font-bold hover:text-fg-brand group cursor-pointer"
+                        [class]="{
+                            'active-tab':currentTab()==='myPosts'
+                        }" (click)="changeTab('myPosts')">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span class="flex-1 ms-3 whitespace-nowrap">My Posts</span>
+                    </button>
+                </li>
+                <li>
+                    <button
+                        class="flex  items-center content-start text-start w-full px-2 py-1.5 text-body rounded-base hover:bg-secondColor font-bold hover:text-fg-brand group cursor-pointer"
+                        [class]="{
+                            'active-tab':currentTab()==='community'
+                        }" (click)="changeTab('community')">
+                        <i class="fa-solid fa-earth-americas"></i>
+                        <span class="flex-1 ms-3 whitespace-nowrap">Community</span>
+                    </button>
+                </li>
+                <li>
+                    <button
+                        class="flex  items-center px-2 py-1.5 content-start text-start w-full text-body rounded-base hover:bg-secondColor font-bold hover:text-fg-brand group cursor-pointer"
+                        [class]="{
+                            'active-tab':currentTab()==='saved'
+                        }" (click)="changeTab('saved')">
+                        <i class="fa-regular fa-bookmark"></i>
+                        <span class="flex-1 ms-3 whitespace-nowrap">Saved</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </aside>

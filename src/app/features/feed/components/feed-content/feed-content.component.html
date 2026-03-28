@@ -1,0 +1,115 @@
+<!-- add post -->
+<div class="holder p-3 rounded-xl bg-white shadow-sm  border border-slate-200 mb-6">
+    <form #form action="" (submit)="submitForm($event,form)">
+        <div class="top flex gap-2.5  mb-4">
+            <div class="img-holder">
+                <img class="w-10 h-10 rounded-full" [src]="currentUser.photo" alt="Rounded avatar">
+            </div>
+            <div>
+                <h3 class="text-heading font-bold mb-1.5 capitalize">{{currentUser.name}}</h3>
+                <button data-dropdown-toggle="dropdown_audience"
+                    class="inline-flex items-center justify-center bg-slate-100 rounded-full py-1 px-3 cursor-pointer text-gray-500 text-xs"
+                    type="button">
+                    {{audience| privacy}}
+                    <svg class="w-4 h-4 ms-1.5 -me-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                        height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m19 9-7 7-7-7" />
+                    </svg>
+                </button>
+
+
+                <div id="dropdown_audience"
+                    class="z-10 hidden bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-44">
+                    <ul class="p-2 text-sm text-body font-medium" aria-labelledby="dropdownDefaultButton">
+                        <li>
+                            <a (click)=" setPrivacy('public')"
+                                class=" cursor-pointer inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"><i
+                                    class="fa-solid fa-earth-europe me-1.5"></i> Public</a>
+                        </li>
+                        <li>
+                            <a (click)=" setPrivacy('only_me')"
+                                class=" cursor-pointer inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"><i
+                                    class="fa-solid fa-lock me-1.5"></i> Only Me</a>
+                        </li>
+                        <li>
+                            <a (click)=" setPrivacy('following')"
+                                class=" cursor-pointer inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"><i
+                                    class="fa-solid fa-users me-1.5"></i> Followers</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <div class="middle textarea pb-5 border-b border-b-gray-400">
+
+            <textarea id="message" rows="4" [formControl]="content"
+                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-0 focus:border-blue-500 block w-full p-3.5 shadow-xs placeholder:text-body"
+                placeholder="Write your thoughts here...">
+        </textarea>
+
+        </div>
+        <div>
+            @if(postImgUrl){
+            <img [src]="postImgUrl" alt="" class="w-full h-75 object-fit-contain my-3 rounded-sm">
+            }
+        </div>
+        <div class="bottom pt-3 flex justify-between">
+            <div class="left flex justify-start gap-2">
+                <label
+                    class="flex justify-center items-center py-2.5 px-3 rounded-sm hover:bg-slate-100 transition cursor-pointer"
+                    for="img"><span class="text-green-600"><i class="fa-regular fa-image  me-1"></i></span>photo /
+                    vedio</label>
+               
+
+                <input type="file" id="img" hidden (change)="selectImg($event)">
+                
+            </div>
+            <div class="right">
+                <button class="px-5 py-2 bg-blue-500 hover:bg-blue-900 rounded-sm cursor-pointer text-white">Post <i
+                        class="fa-regular fa-paper-plane"></i> </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+@if(currentTab()==='feed'){
+@for (post of feedPosts; track $index) {
+<app-post-ui (delete)="deletePost($event)" (savePost)="makePostSaved(post)" [post]="post" (like)="likePost($event)" (privacyChange)="updatePrivacy($event)" (updated)="getFeedPosts()"></app-post-ui>
+
+}
+<button (click)="getFeedPosts()"
+    class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-bold text-slate-700 transition hover:bg-slate-100">View
+    more</button>
+
+}
+@if(currentTab() === 'myPosts'){
+@for (post of myPosts; track $index) {
+<app-post-ui (delete)="deletePost($event)" (savePost)="makePostSaved(post)"  [post]="post" (like)="likePost($event)" (privacyChange)="updatePrivacy($event)" (updated)="getMyPosts()"></app-post-ui>
+
+
+}
+
+
+}
+
+
+@if(currentTab() === 'community'){
+@for (post of postList; track $index) {
+<app-post-ui (delete)="deletePost($event)" (savePost)="makePostSaved(post)" [post]="post" (like)="likePost($event)" (privacyChange)="updatePrivacy($event)" (updated)="getAllPostsData()"></app-post-ui>
+
+
+}
+}
+
+
+
+@if(currentTab() === 'saved'){
+@for (post of postSaved; track $index) {
+<app-post-ui (delete)="deletePost($event)" (savePost)="makePostSaved(post)" [post]="post" (like)="likePost($event)" (privacyChange)="updatePrivacy($event)" (updated)="getSavePosts()"></app-post-ui>
+
+}
+}
